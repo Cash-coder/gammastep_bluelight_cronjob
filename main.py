@@ -11,8 +11,13 @@ import os
 
 # Define the night times
 NIGHT_1 = "17:30"
-NIGHT_2 = "18:00"
-NIGHT_3 = "18:25"
+NIGHT_2 = "18:25"
+NIGHT_3 = "18:40"
+
+NIGHT_TEMPRERATURE_1 = 3700
+NIGHT_TEMPRERATURE_2 = 3000
+NIGHT_TEMPRERATURE_3 = 2500
+
 
 # Flag system is used to avoid restarting night_x when it's already on
 # Complete file path is needed to execute from cron jobs
@@ -52,6 +57,7 @@ def kill_gammastep():
 if current_time >= NIGHT_3:
     if not read_flags('flag_night_3'):
         print(f"It's night time 3! {current_time}")
+        
         kill_gammastep()
         sleep(0.5)
 
@@ -60,11 +66,12 @@ if current_time >= NIGHT_3:
         write_flag('flag_night_2', False)
         write_flag('flag_night_3', True)
 
-        set_gammastep(2500)
+        set_gammastep(NIGHT_TEMPRERATURE_3)
 
 elif current_time >= NIGHT_2:
     if not read_flags('flag_night_2'):
         print(f"It's night time 2! {current_time}")
+        
         kill_gammastep()
         sleep(0.5)
 
@@ -73,11 +80,12 @@ elif current_time >= NIGHT_2:
         write_flag('flag_night_2', True)
         write_flag('flag_night_3', False)
 
-        set_gammastep(3000)
+        set_gammastep(NIGHT_TEMPRERATURE_2)
 
 elif current_time >= NIGHT_1:
     if not read_flags('flag_night_1'):
         print(f"It's night time 1! {current_time}")
+        
         kill_gammastep()
         sleep(0.5)
 
@@ -86,7 +94,7 @@ elif current_time >= NIGHT_1:
         write_flag('flag_night_2', False)
         write_flag('flag_night_3', False)
 
-        set_gammastep(3600)
+        set_gammastep(NIGHT_TEMPRERATURE_1)
 
 else:
     print(f"It's still daytime. {current_time}")
