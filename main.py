@@ -34,10 +34,10 @@ def read_flags(flag=None):
         return flags.get(flag) if flag else flags
 
 
-def write_flag(flag, value):
+def write_flags(flags_dict):
     """Write flags to the memory file."""
     flags_json = read_flags()
-    flags_json[flag] = value
+    flags_json.update(flags_dict)
 
     with open(MEMORY_FLAGS_FILE, "w") as outfile:
         json.dump(flags_json, outfile)
@@ -62,9 +62,11 @@ if current_time >= NIGHT_3:
         sleep(0.5)
 
         # Set flag 3 to true, others to false
-        write_flag('flag_night_1', False)
-        write_flag('flag_night_2', False)
-        write_flag('flag_night_3', True)
+        write_flags({
+            'flag_night_1': False,
+            'flag_night_2': False,
+            'flag_night_3': True
+        })
 
         set_gammastep(NIGHT_TEMPRERATURE_3)
 
@@ -76,9 +78,11 @@ elif current_time >= NIGHT_2:
         sleep(0.5)
 
         # Set flag 2 to true
-        write_flag('flag_night_1', False)
-        write_flag('flag_night_2', True)
-        write_flag('flag_night_3', False)
+        write_flags({
+            'flag_night_1': False,
+            'flag_night_2': True,
+            'flag_night_3': False
+        })
 
         set_gammastep(NIGHT_TEMPRERATURE_2)
 
@@ -89,12 +93,13 @@ elif current_time >= NIGHT_1:
         kill_gammastep()
         sleep(0.5)
 
-        # Set flag 1 to true
-        write_flag('flag_night_1', True)
-        write_flag('flag_night_2', False)
-        write_flag('flag_night_3', False)
+        write_flags({
+            'flag_night_1': True,
+            'flag_night_2': False,
+            'flag_night_3': False
+        })
 
         set_gammastep(NIGHT_TEMPRERATURE_1)
 
 else:
-    print(f"It's still daytime. {current_time}")
+    print(f"It's still daytime, no gammastep activation required. {current_time}")
