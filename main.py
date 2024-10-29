@@ -19,9 +19,6 @@ night_3 = "18:25"
 # flag system is used to avoid restarting night_x when its already on
 # complete file path is needed to execute from cron jobs
 MEMORY_FLAGS_FILE = os.path.join(os.path.dirname(__file__), 'memory_flags.json')
-flag_night_1 = False
-flag_night_2 = False
-flag_night_3 = False
 
 # Get the current time
 current_time = datetime.now().strftime("%H:%M")
@@ -38,6 +35,7 @@ def read_flags(flag=False):
         # otherwise return all flags
         return json.load(openfile) 
 
+# write flag to the memory file
 def write_flag(flag, value):
     flags_json = read_flags()
     flags_json[f'{flag}'] = value
@@ -46,11 +44,11 @@ def write_flag(flag, value):
         json.dump(flags_json, outfile)
 
 
-# function to execute gammate blue light in terminal
+# function to execute gammate blue light in CLI terminal as a subprocess
 def set_gammastep(temp):
     subprocess.run(['gammastep', '-O', str(temp)])
 
-# to update gamma step temperature you have to kill the old gammastep process, if exist
+# to update gamma step temperature you have to kill the old gammastep process
 def kill_gammastep():
     # Kill any existing gammastep processes
     subprocess.run(['pkill', 'gammastep'])
@@ -94,6 +92,6 @@ elif current_time >= night_1:
         write_flag('flag_night_3', False)
 
         set_gammastep(3600)
-        flag_night_1 = True
 else:
     print(f"It's still daytime. {current_time}")
+    safgsdfgsd
